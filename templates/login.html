@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔑 Đăng nhập - Unban Tool</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/">🏠 Trang chủ</a>
+            <a href="/dangki">📝 Đăng ký</a>
+            <a href="/login" class="active">🔑 Đăng nhập</a>
+        </nav>
+
+        <div style="margin-bottom: 30px;">
+            <h2>🔑 Đăng nhập</h2>
+            <p style="color: rgba(255,255,255,0.4); font-size: 14px; margin-top: 6px;">
+                Truy cập vào tài khoản của bạn
+            </p>
+        </div>
+
+        {% if error %}
+        <div class="result-box error" style="margin-bottom: 16px;">
+            ❌ {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            <input type="text" name="username" placeholder="👤 Tên đăng nhập" required>
+            <input type="password" name="password" placeholder="🔒 Mật khẩu" required>
+            <button type="submit">🚀 Đăng nhập</button>
+        </form>
+
+        <div style="margin-top: 18px; text-align: center; font-size: 14px; color: rgba(255,255,255,0.4);">
+            Chưa có tài khoản? <a href="/dangki">Đăng ký</a>
+        </div>
+    </div>
+</body>
+</html>

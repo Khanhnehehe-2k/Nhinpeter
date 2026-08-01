@@ -1,0 +1,43 @@
+<!-- templates/admin_login.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ Admin - Unban Tool</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <div class="container" style="max-width: 440px;">
+        <nav>
+            <a href="/">🏠 Trang chủ</a>
+            <a href="/admin_login" class="active">🛡️ Admin</a>
+        </nav>
+
+        <div style="margin-bottom: 30px;">
+            <h2>🛡️ Admin Panel</h2>
+            <p style="color: rgba(255,255,255,0.4); font-size: 14px; margin-top: 6px;">
+                Đăng nhập để quản lý hệ thống
+            </p>
+        </div>
+
+        {% if error %}
+        <div class="result-box error" style="margin-bottom: 16px;">
+            ❌ {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            <input type="text" name="username" placeholder="👤 Tên đăng nhập" required>
+            <input type="password" name="password" placeholder="🔒 Mật khẩu" required>
+            <button type="submit">🔓 Đăng nhập Admin</button>
+        </form>
+
+        <div style="margin-top: 18px; text-align: center; font-size: 13px; color: rgba(255,255,255,0.2);">
+            🔐 Khu vực dành cho quản trị viên
+        </div>
+    </div>
+</body>
+</html>

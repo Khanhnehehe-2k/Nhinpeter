@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔓 Unban Tool - Mở Khóa Token</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/" class="active">🏠 Trang chủ</a>
+            {% if user %}
+                <a href="/logout" style="color:#e94560;">🚪 Đăng xuất ({{ user }})</a>
+            {% else %}
+                <a href="/dangki">📝 Đăng ký</a>
+                <a href="/login">🔑 Đăng nhập</a>
+            {% endif %}
+        </nav>
+
+        <div style="margin-bottom: 30px;">
+            <h1>🔓 Mở Khóa <span class="sub">bằng Token</span></h1>
+            <p style="color: rgba(255,255,255,0.4); font-size: 14px; margin-top: 6px;">
+                {% if user %}
+                    Chào <strong style="color:#e94560;">{{ user }}</strong>! Nhập token để gửi yêu cầu
+                {% else %}
+                    Vui lòng <a href="/login">đăng nhập</a> để gửi token
+                {% endif %}
+            </p>
+        </div>
+
+        {% if user %}
+            <input type="text" id="tokenInput" placeholder="Nhập Access Token của bạn..." autofocus>
+            <button onclick="submitToken()">🚀 Gửi yêu cầu</button>
+            <div id="result"></div>
+        {% else %}
+            <div style="text-align:center; padding:30px 0; color:rgba(255,255,255,0.3);">
+                🔒 Vui lòng <a href="/login" style="color:#e94560;">đăng nhập</a> hoặc <a href="/dangki" style="color:#e94560;">đăng ký</a> để sử dụng
+            </div>
+        {% endif %}
+
+        <div style="margin-top: 20px; text-align: center; font-size: 13px; color: rgba(255,255,255,0.2);">
+            ⚡ Mọi dữ liệu đều được bảo mật
+        </div>
+    </div>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

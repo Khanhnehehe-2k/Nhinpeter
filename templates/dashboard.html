@@ -1,0 +1,308 @@
+<!-- templates/dashboard.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Dashboard - Unban Tool</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        .admin-section {
+            margin-bottom: 32px;
+            padding: 24px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+        .admin-section h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        th {
+            text-align: left;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.03);
+            color: rgba(255,255,255,0.5);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            color: rgba(255,255,255,0.8);
+        }
+        tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+        .btn-sm {
+            padding: 5px 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            margin-right: 4px;
+        }
+        .btn-sm:hover {
+            transform: translateY(-1px);
+        }
+        .btn-success { background: rgba(46,204,113,0.2); color: #2ecc71; }
+        .btn-success:hover { background: rgba(46,204,113,0.3); }
+        .btn-danger { background: rgba(233,69,96,0.2); color: #e94560; }
+        .btn-danger:hover { background: rgba(233,69,96,0.3); }
+        .btn-warning { background: rgba(241,196,15,0.2); color: #f1c40f; }
+        .btn-warning:hover { background: rgba(241,196,15,0.3); }
+        .btn-info { background: rgba(52,152,219,0.2); color: #3498db; }
+        .btn-info:hover { background: rgba(52,152,219,0.3); }
+
+        .add-user-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .add-user-form input {
+            flex: 1;
+            min-width: 140px;
+            margin-bottom: 0;
+        }
+        .add-user-form button {
+            flex-shrink: 0;
+            width: auto;
+            padding: 12px 28px;
+        }
+        .stat-box {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .stat-item {
+            background: rgba(255,255,255,0.03);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.04);
+            flex: 1;
+            min-width: 100px;
+        }
+        .stat-item .num {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .stat-item .label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .token-mono {
+            font-family: 'Be Vietnam Pro', monospace;
+            font-size: 12px;
+            background: rgba(255,255,255,0.04);
+            padding: 2px 10px;
+            border-radius: 6px;
+            color: #e94560;
+        }
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header-actions .logout-btn {
+            background: rgba(233,69,96,0.1);
+            color: #e94560;
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid rgba(233,69,96,0.15);
+            transition: all 0.2s ease;
+        }
+        .header-actions .logout-btn:hover {
+            background: rgba(233,69,96,0.2);
+            text-decoration: none;
+        }
+        @media (max-width: 600px) {
+            .admin-section { padding: 16px; }
+            .stat-item .num { font-size: 18px; }
+            th, td { font-size: 11px; padding: 8px 10px; }
+            .btn-sm { font-size: 10px; padding: 4px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="max-width: 1100px;">
+        <div class="header-actions">
+            <h1 style="font-size: 24px; margin:0;">📊 Bảng điều khiển</h1>
+            <a href="/admin/logout" class="logout-btn">🚪 Đăng xuất</a>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-item">
+                <div class="num">{{ users|length }}</div>
+                <div class="label">Người dùng</div>
+            </div>
+            <div class="stat-item">
+                <div class="num">{{ tokens|length }}</div>
+                <div class="label">Token đã nhận</div>
+            </div>
+            <div class="stat-item">
+                <div class="num">{{ tokens|selectattr('status', 'equalto', 'pending')|list|length }}</div>
+                <div class="label">Chờ xử lý</div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h3>👥 Quản lý người dùng</h3>
+            <div class="add-user-form">
+                <input type="text" id="newUsername" placeholder="👤 Tên đăng nhập">
+                <input type="text" id="newPassword" placeholder="🔒 Mật khẩu">
+                <button class="btn-success" onclick="addUser()">➕ Thêm user</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Ngày tạo</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td><strong>{{ user.username }}</strong></td>
+                            <td style="color:rgba(255,255,255,0.4);">{{ user.created_at }}</td>
+                            <td>
+                                <span class="badge badge-{{ user.status }}">
+                                    {{ '🟢 Hoạt động' if user.status == 'active' else '🔴 Đã khóa' }}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn-sm btn-warning" onclick="toggleUser('{{ user.username }}')">
+                                    {{ '🔓 Mở khóa' if user.status == 'blocked' else '🔒 Khóa' }}
+                                </button>
+                                <button class="btn-sm btn-danger" onclick="deleteUser('{{ user.username }}')">🗑️ Xóa</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h3>🔑 Token đã nhận</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Token</th>
+                            <th>Thời gian</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for token in tokens %}
+                        <tr>
+                            <td><span class="token-mono">{{ token.token[:20] }}{% if token.token|length > 20 %}...{% endif %}</span></td>
+                            <td style="color:rgba(255,255,255,0.4);">{{ token.time }}</td>
+                            <td>
+                                <span class="badge badge-{{ token.status }}">
+                                    {{ '⏳ Chờ' if token.status == 'pending' else '✅ Đã xử lý' }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if token.status == 'pending' %}
+                                <button class="btn-sm btn-success" onclick="processToken({{ loop.index0 }})">✅ Xử lý</button>
+                                {% else %}
+                                <span style="color:rgba(255,255,255,0.2); font-size:12px;">✔ Hoàn tất</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="text-align:center; font-size:12px; color:rgba(255,255,255,0.15); margin-top:10px;">
+            🔐 Unban Tool v2.0 • Bảo mật tuyệt đối
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script>
+        function addUser() {
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value.trim();
+            if (!username || !password) {
+                alert('⚠️ Vui lòng nhập đầy đủ thông tin');
+                return;
+            }
+            fetch('/admin/user/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.msg);
+                if (data.status === 'ok') location.reload();
+            });
+        }
+
+        function deleteUser(username) {
+            if (!confirm(`🗑️ Xóa user "${username}"?`)) return;
+            fetch(`/admin/user/delete/${username}`, { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.msg);
+                if (data.status === 'ok') location.reload();
+            });
+        }
+
+        function toggleUser(username) {
+            fetch(`/admin/user/toggle/${username}`, { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.msg);
+                if (data.status === 'ok') location.reload();
+            });
+        }
+
+        function processToken(index) {
+            fetch(`/admin/token/process/${index}`, { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.msg);
+                if (data.status === 'ok') location.reload();
+            });
+        }
+    </script>
+</body>
+</html>
